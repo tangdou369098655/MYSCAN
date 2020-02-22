@@ -1,57 +1,121 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div class="myhello">
+    <x-header :left-options="{backText: ''}" style="background:#eee;">員工健康掃碼</x-header>
+    <div class="akd_scan">
+        <div class="top">
+          <div class="top_one">
+            <div class="success">掃碼成功</div>
+          </div>
+            <div id="mysuccesstime">{{ mydata1 }}</div>
+            <img class="myimg" src="../assets/ri2.png" alt="">
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { XHeader } from 'vux'
+
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String
+  components: {
+    XHeader
+  },
+  data () {
+    return {
+      mydata1: '2020-02-20 12:40',
+    }
+  },
+  created () {
+    this.setDate()
+    // this.getData()
+  },
+  methods: {
+    getData () {
+      // axios.get('https://lab.ahusmart.com/nCoV/api/overall').then((res) => {
+      //   if (res.status === 200) {
+      //     const _ = res.data.results[0]
+      //     this.confirmedCount = _.confirmedCount
+      //     this.suspectedCount = _.suspectedCount
+      //     this.curedCount = _.curedCount
+      //     this.deadCount = _.deadCount
+      //   }
+      //   // eslint-disable-next-line no-console
+      //   console.log(res)
+      // })
+    },
+    setDate () {
+      this.mydata1 = this.getweek()
+    },
+    getweek (dateString) {
+      let da = ''
+      if (dateString === undefined) {
+        const now = new Date()
+        let nowM = now.getMonth() + 1
+        // eslint-disable-next-line camelcase
+        nowM = nowM < 10 ? '0' + nowM : nowM
+        let nowD = now.getDate()
+        nowD = nowD < 10 ? '0' + nowD : nowD
+        let hour = now.getHours()
+        hour = hour < 10 ? '0' + hour : hour
+        let minute = now.getMinutes()
+        minute = minute < 10 ? '0' + minute : minute
+        let second = now.getSeconds()
+        second = second < 10 ? '0' + second : second
+        da = now.getFullYear() + '-' + nowM + '-' + nowD + ' ' + hour + ':' + minute + ':' + second
+      } else {
+        da = dateString.toString()
+        // 日期格式2015-12-30
+      }
+      return da;
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
+<style lang="less">
+// 標題欄代碼
+.myhello /deep/.vux-header .vux-header-left .left-arrow:before {
+    border-color:black;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.myhello /deep/.vux-header .vux-header-title {
+    color: rgb(8, 8, 8);
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+// 標題欄代碼
+// 內容代碼
+.akd_scan{
+  background: linear-gradient(to bottom, #0b68c2, #0b68c2  , #1781cd);
+  .top{
+    padding-top:1rem;
+      position: relative;
+    font-size:1.2rem;
+    color:white;
+    height: 11rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .top_one{
+    display: flex;
+    justify-content: center;
+    margin:1rem;
+      .success{
+        line-height: 2.5rem;
+        width: 10rem;
+        color:black;
+        background-color: #eff3f4;
+      }
+    }
+    #mysuccesstime{
+      font-size:1.5rem;
+      margin-bottom: 0.2rem;
+    }
+    .myimg{
+      height: 4rem;
+      position: absolute;
+    bottom: -1.5rem;
+    }
+  }
 }
-a {
-  color: #42b983;
-}
+// 內容代碼
 </style>
